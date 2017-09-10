@@ -1,1 +1,1 @@
-web: node --debug=5858 ./bin/www
+web: node --inspect=5858 ./bin/www

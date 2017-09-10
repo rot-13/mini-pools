@@ -6,6 +6,9 @@
     "start": "node ./bin/www",
     "db:init": "node ./bin/db_init.js"
   },
+  "engines": {
+    "node": "7.9.0"
+  },
   "dependencies": {
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",

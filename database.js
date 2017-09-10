@@ -5,30 +5,24 @@ const db = {};
 db.name = 'mini_pools';
 db.Sequelize = require('sequelize');
 
-db.create = () => {
-    const sequelize = new db.Sequelize('postgres', 'ifeins', '', {host: 'localhost', dialect: 'postgres'});
-    let promise = sequelize.query(`DROP DATABASE IF EXISTS "${db.name}"`);
-    promise = promise.then(() => {
-        return sequelize.query(`CREATE DATABASE "${db.name}"`);
-    });
-
-    return promise;
+const connectionUrl = (dbName) => {
+    return process.env.DATABASE_URL || `postgres://ifeins@localhost:5432/${dbName}`
 }
 
-db.sync = () => {
-    db.sequelize = new db.Sequelize(db.name, 'ifeins', '', {
-        logging: console.log,
-        host: 'localhost',
-        dialect: 'postgres',
-        pool: {
-            max: 30,
-            min: 0, 
-            idle: 10000
-        }
-    });
+db.create = async () => {
+    const sequelize = new db.Sequelize(connectionUrl(''));
+    try {
+        await sequelize.query(`CREATE DATABASE "${db.name}"`);
+    } catch (err) {
+        // ignore if database already exist
+    }
+}
+
+db.sync = (force) => {
+    db.sequelize = new db.Sequelize(connectionUrl(db.name));
     defineModels(db);
 
-    return db.sequelize.sync();
+    return db.sequelize.sync({force: force});
 }
 
 db.seed = () => {
