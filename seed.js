@@ -1,6 +1,5 @@
-
-const seed = (db) => {
-    let promise = db.User.bulkCreate([
+const seed = async (db) => {
+    await db.User.bulkCreate([
         {
             name: 'John Snow',
             avatarUrl: 'https://typeset-beta.imgix.net/rehost%2F2016%2F9%2F13%2F0a55628f-9b0a-40eb-b39d-68b15eea7e4f.jpg'
@@ -28,16 +27,22 @@ const seed = (db) => {
         {
             name: 'Catelyn Stark',
             avatarUrl: 'http://assets.viewers-guide.hbo.com/larges1-ep1-people-avatar-rgb-stark-tully-catelyn-1024x1024.jpg'
+        },
+        {
+            name: 'Roose Bolton',
+            avatarUrl: 'https://vignette.wikia.nocookie.net/gameofthrones/images/2/26/Profile-RooseBolton.png/revision/latest/scale-to-width-down/350?cb=20170728090234'
         }
     ]);
 
-    promise = promise.then(() => {
-        return db.User.findOne({where: {name: 'Cersei Lannister'}}).then((user) => {
-            return user.createPool({name: 'Red Wedding', goalAmountValue: 10000, goalAmountCurrency: 'USD'});
-        });
-    });
+    let cersei = await db.User.findOne({where: {name: 'Cersei Lannister'}});
+    let bolton = await db.User.findOne({where: {name: 'Roose Bolton'}});
+    
+    let redWedding = await cersei.createPool({name: 'Red Wedding', goalAmountValue: 10000, goalAmountCurrency: 'USD'}); 
 
-    return promise;
+    await db.Contribution.create({
+        amountValue: 1000, amountCurrency: 'USD', note: 'The Lannisters send their regards.',
+        contributorId: bolton.get('id'), poolId: redWedding.get('id')
+    });
 };
 
 module.exports = seed;
