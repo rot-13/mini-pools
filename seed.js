@@ -43,6 +43,11 @@ const seed = async (db) => {
         amountValue: 1000, amountCurrency: 'USD', note: 'The Lannisters send their regards.',
         contributorId: bolton.get('id'), poolId: redWedding.get('id')
     });
+
+    await db.Contribution.create({
+        amountValue: 5000, amountCurrency: 'USD', note: 'Mazal Tov!',
+        contributorId: cersei.get('id'), poolId: redWedding.get('id'),
+    });
 };
 
 module.exports = seed;
