@@ -7,6 +7,11 @@ router.get('/', async function(req, res, next) {
     res.send(result);
 });
 
+router.post('/', async function(req, res, next) {
+    const result = await database.User.create(req.body);
+    res.send(result);
+});
+
 router.get('/:userId', async function(req, res, next) {
     const result = await database.User.findById(req.params.userId);
     res.send(result);
