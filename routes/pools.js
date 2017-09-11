@@ -2,8 +2,18 @@ const express = require('express');
 const router = express.Router();
 const database = require('../database');
 
+const poolFetchOptions = () => {
+    const options = {
+        include: [{
+            model: database.User,
+            as: 'creator'
+        }]
+    }
+    return options
+}
+
 router.get('/', async function(req, res, next) {
-    const result = await database.Pool.findAll();
+    let result = await database.Pool.findAll(poolFetchOptions());
     res.send(result);
 });
 
@@ -13,7 +23,7 @@ router.post('/', async function(req, res, next) {
 });
 
 router.get('/:poolId', async function(req, res, next) {
-    const result = await database.Pool.findById(req.params.poolId);
+    const result = await database.Pool.findById(req.params.poolId, poolFetchOptions());
     res.send(result);
 });
 
