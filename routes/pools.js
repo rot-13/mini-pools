@@ -4,10 +4,22 @@ const database = require('../database');
 
 const poolFetchOptions = () => {
     const options = {
-        include: [{
-            model: database.User,
-            as: 'creator'
-        }]
+        include: [
+            {
+                model: database.User,
+                as: 'creator'
+            },
+            {
+                model: database.Contribution,
+                as: 'contributions',
+                include: [
+                    {
+                        model: database.User,
+                        as: 'contributor'
+                    }
+                ]
+            }
+        ]
     }
     return options
 }
