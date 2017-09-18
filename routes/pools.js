@@ -47,8 +47,13 @@ router.get('/:poolId/contributions', async function(req, res, next) {
 router.post('/:poolId/contributions', async function(req, res, next) {
     const params = req.body;
     params.poolId = req.params.poolId;
-    const result = await database.Contribution.create(params);
-    res.send(result);
+    try {
+        const result = await database.Contribution.create(params);
+        res.send(result);        
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error);
+    }
 });
 
 module.exports = router;
