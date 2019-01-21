@@ -6,7 +6,7 @@ const defineModels = (db) => {
     });
 
     db.Pool = db.sequelize.define('pool', {
-        name: {type: db.Sequelize.STRING, allowNull: false, unique: 'compositeIndex'},
+        name: {type: db.Sequelize.STRING, allowNull: false},
         goalAmountValue: {type: db.Sequelize.INTEGER, allowNull: false, min: 1},
         goalAmountCurrency: {type: db.Sequelize.STRING, allowNull: false},
         extra: db.Sequelize.JSONB,
