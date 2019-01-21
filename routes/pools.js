@@ -40,8 +40,8 @@ router.get('/:poolId', async function(req, res, next) {
 });
 
 router.delete('/:poolId', async function(req, res, next) {
-    const result = await database.Pool.destroy({ where: { id: req.params.poolId }})
-    res.send(result);
+    await database.Pool.destroy({ where: { id: req.params.poolId }})
+    res.send("ok");
 });
 
 router.patch('/:poolId', async function(req, res, next) {
