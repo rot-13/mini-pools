@@ -45,7 +45,7 @@ router.delete('/:poolId', async function(req, res, next) {
 });
 
 router.patch('/:poolId', async function(req, res, next) {
-    const result = database.Pool.update(req.body, { where: { id: req.params.poolId }})
+    const result = database.Pool.update(req.body, { where: { id: req.params.poolId }, returning: true, plain: true})
     res.send(result);
 });
 
